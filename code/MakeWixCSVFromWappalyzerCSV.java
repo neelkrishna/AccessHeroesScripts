@@ -10,9 +10,9 @@ import java.util.List;
 public class MakeWixCSVFromWappalyzerCSV {
 
     // input file path
-    private static final String WAPP_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/wappCSV.csv";
+    private static final String WAPP_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/files/wappCSV.csv";
     // output file path
-    private static final String OUTPUT_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/outputCSV.csv";
+    private static final String OUTPUT_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/files/outputCSV.csv";
 
     private static final String NEW_LINE_SEPARATOR = "\n"; 
     // header names
