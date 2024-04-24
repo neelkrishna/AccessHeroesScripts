@@ -18,7 +18,7 @@ This stops commas within the values of these fields from affecting the array col
 
 ## To run 
 
-within `MakeWixCSVFromWappalyzerCSV.java`, modify `WAPP_CSV_PATH` and `OUTPUT_CSV_PATH` to desired values
+within `MakeWixCSVFromWappalyzerCSV.java`, modify `WAPP_CSV_PATH` and `OUTPUT_CSV_PATH` to desired values; ensure input CSV is stored directly under `files/`
 
 Navigate to the root directory of the project and run:
 
