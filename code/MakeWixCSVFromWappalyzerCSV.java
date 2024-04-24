@@ -3,20 +3,19 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.List;
 
 
-// before running, make sure to delete description, title, and other fields which may have commas from wapp CSV
+// before running, make sure to delete description, title, and other columns which may have commas from wapp CSV
 public class MakeWixCSVFromWappalyzerCSV {
 
     // input file path
-    private static final String WAPP_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/files/wappCSV.csv";
+    private static final String WAPP_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/files/wappCSV4_24_24.csv";
     // output file path
-    private static final String OUTPUT_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/files/outputCSV.csv";
+    private static final String OUTPUT_CSV_PATH = "/Users/neelkrishna/projects/AccessHeroes/files/outputCSV4_24_24.csv";
 
     private static final String NEW_LINE_SEPARATOR = "\n"; 
     // header names
-    private static final String FILE_HEADER = "First Name,Last Name,Email Address,Company Name"; 
+    private static final String FILE_HEADER = "First Name,Last Name,Email Address,Company Name, URL"; 
 
     private static String[] outputA = new String[100000];
 
@@ -26,9 +25,10 @@ public class MakeWixCSVFromWappalyzerCSV {
     }
 
     public static void readWappCSV() {
+        BufferedReader br = null;
         try {
             String line = "";
-            BufferedReader br = new BufferedReader(new FileReader(WAPP_CSV_PATH));
+            br = new BufferedReader(new FileReader(WAPP_CSV_PATH));
             int count = 0;
 
             while((line = br.readLine()) != null) {
@@ -41,24 +41,30 @@ public class MakeWixCSVFromWappalyzerCSV {
                 String parsedLastName = parseLastName(entry);
                 String parsedEmail = parseEmail(entry);
                 String parsedCompanyName = parseCompanyName(entry);
+                String parsedURL = parseURL(entry);
 
                 // check to see if any of the fields collected make the entry invalid, as defined by logic in each function. Skips invalid entries
                 if(parsedFirstName.length() < 4 || parsedLastName.length() < 4 || parsedEmail == "abort" || parsedCompanyName.length() < 4) {
                     continue;
                 } else {
                     // adds entry to output array to be written to output CSV
-                    String outputEntry = parsedFirstName + "," + parsedLastName + "," + parsedEmail + "," + parsedCompanyName;
+                    String outputEntry = parsedFirstName + "," + parsedLastName + "," + parsedEmail + "," + parsedCompanyName + "," + parsedURL;
                     outputEntry = outputEntry.replace("\"", "");
                     outputEntry = outputEntry.replace("  ", " ");
                     outputA[count] = outputEntry;
                     count++;
                 }
             }
-            br.close();
         } catch(FileNotFoundException e) {
             e.printStackTrace();
         } catch(IOException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch(IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -112,7 +118,12 @@ public class MakeWixCSVFromWappalyzerCSV {
 
     public static String parseCompanyName(String[] entry) {
         // return inferred company name
-        return entry[41];
+        return entry[entry.length - 8];
+    }
+
+    public static String parseURL(String[] entry) {
+        // return URL
+        return entry[0];
     }
 
     public static void writeCSV() {
@@ -126,7 +137,7 @@ public class MakeWixCSVFromWappalyzerCSV {
             // Add a new line separator after the header 
             fileWriter.append(NEW_LINE_SEPARATOR); 
  
-            // Write row to the CSV file 
+            // Write each row to the CSV file 
             for(int i = 1; i < outputA.length; i++) { 
                 if(outputA[i] == null) {
                     break;
